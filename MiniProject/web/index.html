@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusMesh — Decentralized Offline Mesh Dashboard</title>
+    <title>CampusMesh — Offline Mesh Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/><circle cx='50' cy='50' r='20' fill='%2338bdf8'/></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/><circle cx='50' cy='50' r='20' fill='%2360a5fa'/></svg>">
 </head>
 <body class="dark-theme">
 
@@ -22,35 +22,24 @@
                 </svg>
             </div>
             <div>
-                <h1 class="brand-title">
-                    CampusMesh
-                    <span class="badge badge-accent">DTN Core</span>
-                </h1>
-                <p class="brand-subtitle">Opportunistic Delay-Tolerant P2P Mesh Network</p>
+                <h1 class="brand-title">CampusMesh</h1>
+                <p class="brand-subtitle">Offline Mesh Messaging</p>
             </div>
         </a>
 
         <div class="nav-metrics">
-            <div class="metric-card" title="Your device's local node identity in the mesh">
+            <div class="metric-card" title="Your device identity in the mesh">
                 <span class="metric-label">This Device Node</span>
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <span class="metric-value font-mono font-bold" id="myNodeIdBadge" style="color: var(--accent-cyan); font-size: 0.82rem;">...</span>
-                    <button type="button" class="btn-ghost-sm" onclick="promptChangeNodeId()" title="Change your Call-sign / Device ID">✎ Edit</button>
+                    <button type="button" class="btn-ghost-sm" onclick="promptChangeNodeId()" title="Change Device ID">Edit</button>
                 </div>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Active Strategy</span>
-                <span class="metric-value font-mono" id="navStrategy">ADAPTIVE</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Buffer Pressure</span>
-                <span class="metric-value font-mono" id="navBufferPressure">0.0%</span>
             </div>
             <div class="metric-card">
                 <span class="metric-label">Radio Status</span>
                 <span class="status-indicator">
                     <span class="dot dot-active"></span>
-                    <span>Wi-Fi + BLE 5.0</span>
+                    <span>Wi-Fi Active</span>
                 </span>
             </div>
             <button id="btnConnectMobile" class="btn btn-secondary btn-sm" style="border-color: var(--accent-cyan); color: var(--accent-cyan); font-weight: 600;" title="Connect Mobile Phone or Tablet" onclick="openMobileModal()">
@@ -71,11 +60,7 @@
         <div class="ribbon-stats">
             <span class="ribbon-stat-item">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/></svg>
-                <span>Store: <strong id="ribbonMsgCount">0 msgs</strong></span>
-            </span>
-            <span class="ribbon-stat-item">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
-                <span>Memory: <strong id="ribbonBufBytes">0 KB</strong> / 10 MB</span>
+                <span>Messages: <strong id="ribbonMsgCount">0 msgs</strong></span>
             </span>
             <span class="ribbon-stat-item">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
@@ -83,19 +68,18 @@
             </span>
         </div>
         <div class="ribbon-links">
-            <a href="#radar-section" class="ribbon-link">📡 Topology Radar</a>
-            <a href="#routing-section" class="ribbon-link">⚖️ Decision Matrix</a>
-            <a href="#buffer-section" class="ribbon-link">📦 DTN Buffer</a>
-            <a href="#compose-section" class="ribbon-link">✏️ Compose</a>
-            <a href="#ble-section" class="ribbon-link">🔍 BLE Inspector</a>
-            <a href="#logs-section" class="ribbon-link">📜 SQLite Logs</a>
+            <a href="#radar-section" class="ribbon-link">Topology Radar</a>
+            <a href="#routing-section" class="ribbon-link">Routing Strategy</a>
+            <a href="#buffer-section" class="ribbon-link">Messages</a>
+            <a href="#compose-section" class="ribbon-link">New Message</a>
+            <a href="#logs-section" class="ribbon-link">Activity Log</a>
         </div>
     </nav>
 
     <!-- Main Container -->
     <main class="dashboard-grid">
 
-        <!-- Column 1: Topology Radar & Routing Matrix -->
+        <!-- Column 1: Topology Radar & Routing Strategy Selector -->
         <section class="grid-column">
 
             <!-- Card 1: Interactive Mesh Topology Radar (Live Online Peers Only) -->
@@ -106,25 +90,24 @@
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                         </div>
                         <div>
-                            <h2 class="card-title">Live Mesh Topology & Radio Radar</h2>
-                            <p class="card-subtitle">Real-time discovered peers (Wi-Fi mDNS & BLE 5.0 GATT) — live online nodes only</p>
+                            <h2 class="card-title">Mesh Radar</h2>
+                            <p class="card-subtitle">Real-time discovered peers on local network</p>
                         </div>
                     </div>
                     <div class="card-actions">
-                        <button id="btnScanBle" class="btn btn-primary btn-sm" title="Broadcast beacon and scan for real Wi-Fi and Bluetooth LE peers">
+                        <button id="btnScanBle" class="btn btn-primary btn-sm" title="Scan for nearby peers">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                            <span>Scan Radios & Sync</span>
+                            <span>Scan &amp; Sync</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="canvas-container">
                     <canvas id="meshCanvas" width="600" height="380"></canvas>
-                    <div class="canvas-hint" id="radarOnlineBadge">Live Online Nodes Only</div>
+                    <div class="canvas-hint" id="radarOnlineBadge">Live Online Nodes</div>
                     <div class="canvas-legend">
-                        <span class="legend-item"><span class="legend-color legend-wifi"></span> Wi-Fi (TCP Sockets)</span>
-                        <span class="legend-item"><span class="legend-color legend-ble"></span> Bluetooth LE (GATT)</span>
-                        <span class="legend-item"><span class="legend-color legend-local"></span> Operating Node (Center)</span>
+                        <span class="legend-item"><span class="legend-color legend-wifi"></span> Peers (Wi-Fi)</span>
+                        <span class="legend-item"><span class="legend-color legend-local"></span> This Device (Center)</span>
                     </div>
                 </div>
 
@@ -134,21 +117,21 @@
                         Online Peers:
                     </span>
                     <div id="peerChipsList" class="chips-list">
-                        <span class="text-muted" style="font-size:0.75rem;">Listening for online peers (Wi-Fi mDNS & BLE)...</span>
+                        <span class="text-muted" style="font-size:0.75rem;">Scanning for peers...</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 2: Routing Strategy & Decision Matrix -->
+            <!-- Card 2: Routing Strategy & Decision Matrix (Variables Preserved, Formula Removed) -->
             <div class="card" id="routing-section">
                 <div class="card-header">
                     <div class="card-title-group">
-                        <div class="card-header-icon" style="color: var(--accent-purple);">
+                        <div class="card-header-icon" style="color: var(--accent-cyan);">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                         </div>
                         <div>
-                            <h2 class="card-title">Routing Engine & Adaptive Decision Matrix</h2>
-                            <p class="card-subtitle">Dynamic utility calculation: U(M) = wP·P + wT·T + wB·B</p>
+                            <h2 class="card-title">Routing Engine & Decision Matrix</h2>
+                            <p class="card-subtitle">Dynamic multi-metric prioritization and forwarding decisions</p>
                         </div>
                     </div>
                     <div class="strategy-selector">
@@ -160,14 +143,8 @@
                     </div>
                 </div>
 
-                <!-- Weight Controls for Adaptive Router -->
+                <!-- Weight Controls for Adaptive Router (Formula Removed) -->
                 <div id="adaptiveWeightsPanel">
-                    <div class="formula-badge">
-                        <span>∑ W = 1.00</span>
-                        <span>|</span>
-                        <span>U(M) = wP·P(M) + wT·T(M) + wB·B(M)</span>
-                    </div>
-
                     <!-- Quick Preset Buttons -->
                     <div class="weights-presets">
                         <span class="chips-label">Presets:</span>
@@ -202,17 +179,38 @@
                     </div>
                 </div>
 
+                <!-- Spray-and-Wait Token Configuration Panel -->
+                <div id="sprayTokensPanel" style="display: none;">
+                    <div class="weights-presets">
+                        <span class="chips-label">Token Presets:</span>
+                        <button type="button" class="preset-btn" onclick="applyTokenPreset(2)">L = 2 (Minimal)</button>
+                        <button type="button" class="preset-btn" onclick="applyTokenPreset(4)">L = 4 (Standard)</button>
+                        <button type="button" class="preset-btn" onclick="applyTokenPreset(8)">L = 8 (High Spray)</button>
+                        <button type="button" class="preset-btn" onclick="applyTokenPreset(16)">L = 16 (Max Budget)</button>
+                    </div>
+
+                    <div class="weights-panel" style="grid-template-columns: 1fr;">
+                        <div class="weight-control">
+                            <label for="sliderTokens">
+                                <span>Copy Tokens (L)</span>
+                                <span id="valTokens" class="weight-val-badge">4</span>
+                            </label>
+                            <input type="range" id="sliderTokens" min="1" max="16" step="1" value="4">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Decision Matrix Table -->
                 <div class="table-container">
                     <table class="data-table" id="decisionTable">
-                        <thead>
+                        <thead id="decisionTableHead">
                             <tr>
                                 <th>Rank</th>
                                 <th>Message ID</th>
                                 <th>Priority (P)</th>
                                 <th>Urgency (T)</th>
                                 <th>Buffer (B)</th>
-                                <th>Utility U(M)</th>
+                                <th>Score</th>
                                 <th>Forwarding Decision</th>
                             </tr>
                         </thead>
@@ -229,51 +227,46 @@
 
         </section>
 
-        <!-- Column 2: Buffer, Composer, BLE Inspector & Logs -->
+        <!-- Column 2: Messages, Composer & Activity Logs -->
         <section class="grid-column">
 
-            <!-- Card 3: Store-Carry-Forward Buffer -->
+            <!-- Card 3: Messages (Inbox / Sent / Node Buffer) -->
             <div class="card" id="buffer-section">
                 <div class="card-header">
                     <div class="card-title-group">
-                        <div class="card-header-icon" style="color: var(--accent-green);">
+                        <div class="card-header-icon" style="color: var(--accent-cyan);">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
                         </div>
                         <div>
-                            <h2 class="card-title">Local Message Buffer (Store–Carry–Forward)</h2>
+                            <h2 class="card-title">Messages</h2>
                             <p class="card-subtitle">
-                                <span id="bufCount" class="font-bold">0</span> messages (<span id="bufBytes" class="font-mono">0 KB</span> / 10 MB Capacity)
+                                <span id="bufCount" class="font-bold">0</span> messages in local store
                             </p>
                         </div>
                     </div>
                     <div class="buffer-filter-tabs">
-                        <button type="button" class="buffer-tab active" id="tabBufAll" onclick="setBufferFilter('all')">All Messages (<span id="bufCountAll">0</span>)</button>
-                        <button type="button" class="buffer-tab" id="tabBufInbox" onclick="setBufferFilter('inbox')">📥 Inbox (<span id="bufCountInbox">0</span>)</button>
-                        <button type="button" class="buffer-tab" id="tabBufSent" onclick="setBufferFilter('sent')">📤 Outbox (<span id="bufCountSent">0</span>)</button>
+                        <button type="button" class="buffer-tab active" id="tabBufInbox" onclick="setBufferFilter('inbox')">Inbox (<span id="bufCountInbox">0</span>)</button>
+                        <button type="button" class="buffer-tab" id="tabBufSent" onclick="setBufferFilter('sent')">Sent (<span id="bufCountSent">0</span>)</button>
+                        <button type="button" class="buffer-tab" id="tabBufRelay" onclick="setBufferFilter('relay')">Node Buffer (<span id="bufCountRelay">0</span>)</button>
                     </div>
                     <div class="card-actions">
-                        <button id="btnPurgeExpired" class="btn btn-secondary btn-sm" title="Remove expired TTL messages from local store">
+                        <button id="btnPurgeExpired" class="btn btn-secondary btn-sm" title="Remove expired messages">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                             Purge Expired
                         </button>
                     </div>
                 </div>
 
-                <!-- Buffer Capacity Progress Bar -->
-                <div class="progress-bar-container" title="Buffer pressure gauge (used / total capacity)">
-                    <div class="progress-bar" id="bufferPressureBar" style="width: 0%;"></div>
-                </div>
-
-                <!-- Messages List -->
+                <!-- Messages List (Collapsed by default, click to expand) -->
                 <div class="buffer-list" id="bufferList">
                     <div class="empty-state">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                        <span>No DTN messages currently in local store.</span>
+                        <span>No messages currently in local store.</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 4: Message Composer -->
+            <!-- Card 4: New Message Composer -->
             <div class="card" id="compose-section">
                 <div class="card-header">
                     <div class="card-title-group">
@@ -281,123 +274,88 @@
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         </div>
                         <div>
-                            <h2 class="card-title">Compose & Enqueue DTN Message</h2>
-                            <p class="card-subtitle">Dispatched opportunistically over Wi-Fi TCP or Bluetooth LE GATT</p>
+                            <h2 class="card-title">New Message</h2>
+                            <p class="card-subtitle">Send to peers on the local network</p>
                         </div>
                     </div>
                 </div>
 
                 <form id="composeForm" class="compose-form">
-                    <!-- Sender & Destination Row with Swap Button -->
+                    <!-- Sender & Destination Row -->
                     <div class="form-row">
                         <div class="form-group flex-1">
                             <label for="composeSource">
-                                <span>Sender (This Node - Locked)</span>
+                                <span>From</span>
                             </label>
-                            <input type="text" id="composeSource" class="form-input font-bold font-mono" readonly value="" style="background: var(--bg-card); opacity: 0.85; cursor: not-allowed;" title="Sender identity is bound to this device" required>
+                            <input type="text" id="composeSource" class="form-input font-bold font-mono" readonly value="" style="background: var(--bg-card); opacity: 0.85; cursor: not-allowed;" required>
                         </div>
                         <div class="form-group flex-1">
                             <label for="composeDest">
-                                <span>Destination Peer ID</span>
+                                <span>To</span>
                             </label>
-                            <input type="text" id="composeDest" class="form-input font-mono" placeholder="e.g. PHONE_MOBILE, LAPTOP_UBU, or BROADCAST" value="BROADCAST" required>
+                            <input type="text" id="composeDest" class="form-input font-mono" placeholder="Select a peer or type BROADCAST" value="BROADCAST" required>
                         </div>
                     </div>
 
-                    <!-- Quick Target Picker (Dynamically Populated from Online Peers) -->
+                    <!-- Quick Target Picker -->
                     <div class="quick-targets-row" id="quickTargetsRow">
                         <span>Quick Targets:</span>
                         <div id="quickTargetPills" style="display:inline-flex; gap:6px; flex-wrap:wrap;">
-                            <button type="button" class="target-pill" onclick="setDestination('BROADCAST')">📡 BROADCAST</button>
+                            <button type="button" class="target-pill" onclick="setDestination('BROADCAST')">BROADCAST</button>
                         </div>
                     </div>
 
-                    <!-- Priority, TTL and Copy Tokens -->
+                    <!-- Priority, TTL Expiry & Copy Tokens -->
                     <div class="form-row">
                         <div class="form-group flex-1">
-                            <label for="composePriority">Priority Level</label>
+                            <label for="composePriority">Priority</label>
                             <select id="composePriority" class="form-select">
-                                <option value="HIGH">🔴 HIGH (Weight P=1.00 - Critical)</option>
-                                <option value="MEDIUM" selected>🔵 MEDIUM (Weight P=0.67 - Standard)</option>
-                                <option value="LOW">⚪ LOW (Weight P=0.33 - Routine)</option>
+                                <option value="HIGH">High</option>
+                                <option value="MEDIUM" selected>Medium</option>
+                                <option value="LOW">Low</option>
                             </select>
                         </div>
                         <div class="form-group flex-1">
                             <label for="composeTtl">
-                                <span>TTL Expiry: <strong id="composeTtlVal" class="text-accent font-mono">60 min</strong></span>
+                                <span>Expires in: <strong id="composeTtlVal" class="text-accent font-mono">60 min</strong></span>
                             </label>
                             <input type="range" id="composeTtl" min="60" max="86400" step="60" value="3600">
                         </div>
-                        <div class="form-group">
-                            <label for="composeTokens" title="Spray-and-Wait initial token quota (L)">Copy Tokens (L)</label>
-                            <input type="number" id="composeTokens" class="form-input font-mono" min="1" max="16" value="4" style="width: 80px;">
+                        <div class="form-group" style="width: 120px;">
+                            <label for="composeTokens" title="Spray-and-Wait initial token quota (L)">
+                                <span>Tokens (L)</span>
+                            </label>
+                            <input type="number" id="composeTokens" class="form-input font-mono" min="1" max="16" value="4">
                         </div>
-                    </div>
-
-                    <!-- Quick Template Pills -->
-                    <div class="quick-targets-row">
-                        <span>Templates:</span>
-                        <button type="button" class="target-pill" onclick="applyTemplate('CAMPUS_ALERT')">🚨 Severe Weather</button>
-                        <button type="button" class="target-pill" onclick="applyTemplate('LAB_NOTICE')">🔬 Lab Relocation</button>
-                        <button type="button" class="target-pill" onclick="applyTemplate('STUDY_GROUP')">📚 Library Study</button>
-                        <button type="button" class="target-pill" onclick="applyTemplate('LOST_KEYS')">🔑 Lost Item</button>
                     </div>
 
                     <!-- Payload Area -->
                     <div class="form-group">
                         <label for="composePayload">
-                            <span>Message Payload</span>
-                            <span id="payloadBytesCounter" class="text-muted font-mono" style="font-size:0.68rem;">68 / 65,536 bytes</span>
+                            <span>Message</span>
                         </label>
-                        <textarea id="composePayload" class="form-textarea font-mono" rows="2" placeholder="Enter message payload for mesh dissemination..." required>Campus alert: Severe weather update. Relocate to main pavilion.</textarea>
+                        <textarea id="composePayload" class="form-textarea font-mono" rows="3" placeholder="Type your message..." required></textarea>
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary btn-block">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                            Dispatch to Mesh Network
+                            Send Message
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Card 5: Bluetooth LE GATT Packet Inspector & SQLite Logs -->
-            <div class="card" id="ble-section">
-                <div class="card-header">
-                    <div class="card-title-group">
-                        <div class="card-header-icon" style="color: var(--accent-purple);">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg>
-                        </div>
-                        <div>
-                            <h2 class="card-title">Bluetooth LE GATT Packet Inspector</h2>
-                            <p class="card-subtitle">Self-describing 13B header with CRC32 integrity verification</p>
-                        </div>
-                    </div>
+            <!-- Activity Log (Collapsible) -->
+            <details class="logs-accordion" id="logs-section">
+                <summary class="logs-summary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    Activity Log
+                </summary>
+                <div class="logs-stream" id="logsStream">
+                    <div>Waiting for events...</div>
                 </div>
-
-                <div class="ble-inspector" id="bleInspector">
-                    <div class="ble-stat-row">
-                        <span>ATT MTU: <strong class="text-accent font-mono">23B (Standard) / 512B (Negotiated)</strong></span>
-                        <span>Header: <strong class="font-mono">13 Bytes</strong></span>
-                        <span>Magic: <strong class="text-success font-mono">0x43 0x4D ('C' 'M')</strong></span>
-                        <span>Transport: <strong class="text-purple font-mono">0000FE60</strong></span>
-                    </div>
-                    <div id="bleChunksView" class="ble-chunks-view">
-                        Select or compose a message to inspect its binary chunk envelopes.
-                    </div>
-                </div>
-
-                <!-- SQLite Event Log Stream (Collapsible) -->
-                <details class="logs-accordion" id="logs-section" open>
-                    <summary class="logs-summary">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                        SQLite Event Audit Trail (database/campusmesh.db)
-                    </summary>
-                    <div class="logs-stream" id="logsStream">
-                        <div>Listening for SQLite events...</div>
-                    </div>
-                </details>
-            </div>
+            </details>
 
         </section>
     </main>
@@ -405,13 +363,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div>
-            <strong>CampusMesh v2.4</strong> — Delay-Tolerant Networking (DTN) Store-Carry-Forward Intranet Mesh
-        </div>
-        <div class="footer-links">
-            <a href="/api/status" target="_blank" rel="noopener">/api/status</a>
-            <a href="/api/peers" target="_blank" rel="noopener">/api/peers</a>
-            <a href="/api/buffer" target="_blank" rel="noopener">/api/buffer</a>
-            <a href="/api/events" target="_blank" rel="noopener">/api/events</a>
+            <strong>CampusMesh</strong> — Offline Mesh Network
         </div>
     </footer>
 
@@ -425,7 +377,7 @@
                     </div>
                     <div>
                         <h3 class="modal-title">Connect Mobile Device</h3>
-                        <p class="modal-subtitle">Instant P2P connection via Wi-Fi or Mobile Hotspot</p>
+                        <p class="modal-subtitle">Instant connection via Wi-Fi or Mobile Hotspot</p>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-icon" onclick="closeMobileModal()" title="Close">✕</button>
@@ -461,20 +413,8 @@
                     <div class="connect-step">
                         <span class="step-num">3</span>
                         <div>
-                            <strong>Instant Discovery:</strong> The phone automatically registers as <code>PHONE_MOBILE</code> and appears on the Live Radar as an online node in active contact!
+                            <strong>Instant Discovery:</strong> The phone automatically appears on the Live Radar as an online node!
                         </div>
-                    </div>
-                </div>
-
-                <!-- Native Apps Option -->
-                <div style="padding: 10px 14px; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: var(--radius-sm); font-size: 0.74rem;">
-                    <strong style="color: var(--accent-purple);">Native Apps (Wi-Fi NSD + Bluetooth LE 5.0):</strong>
-                    <div style="margin-top: 4px; color: var(--text-secondary); line-height: 1.4;">
-                        For native offline mesh with Bluetooth LE GATT chunking:
-                        <ul style="margin-left: 18px; margin-top: 3px;">
-                            <li><strong>Android</strong>: Open <code>android/</code> in Android Studio & install on phone.</li>
-                            <li><strong>iOS</strong>: Open <code>ios/</code> in Xcode & run on iPhone.</li>
-                        </ul>
                     </div>
                 </div>
             </div>
